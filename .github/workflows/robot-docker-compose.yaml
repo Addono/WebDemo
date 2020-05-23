@@ -1,0 +1,29 @@
+name: RF Selenium Hub
+
+on: push
+
+jobs:
+  test-inside:
+    name: Test inside Docker Compose
+
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - name: Give the browsers time to connect to Selenium Hub
+        run: sleep 10
+
+      - name: Run Chrome tests
+        run: docker-compose exec -T application robot -v BROWSER:$BROWSER -v REMOTE_URL:http://selenium-hub:4444/wd/hub -v SERVER:application:7272 /tests/login_tests
+        env:
+          BROWSER: chrome
+
+      - name: Run Firefox tests
+        run: docker-compose exec -T application robot -v BROWSER:$BROWSER -v REMOTE_URL:http://selenium-hub:4444/wd/hub -v SERVER:application:7272 /tests/login_tests
+        env:
+          BROWSER: firefox

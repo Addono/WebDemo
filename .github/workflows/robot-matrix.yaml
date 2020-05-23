@@ -1,0 +1,42 @@
+name: RF Selenium Hub
+
+on: push
+
+jobs:
+ matrix:
+    name: Matrix
+
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        python-version: [ '3.7', '3.8' ]
+        browser: ['chrome', 'firefox']
+
+    container:
+      image: python:${{ matrix.python-version }}-slim
+      # Set an alias for the container which is executing the "steps",
+      # as the Selenium Browser will need it as its hostname to connect to.
+      options: --network-alias application
+    
+    services:
+      hub:
+        image: selenium/hub:3.141.59-20200515
+      browser:
+        image: selenium/node-${{ matrix.browser }}:3.141.59-20200515
+        env:
+          HUB_HOST: hub
+          HUB_PORT: 4444
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Launch our webserver in the background
+        run: python demoapp/server.py &
+
+      - name: Test
+        run: robot -v BROWSER:${{ matrix.browser }} -v REMOTE_URL:http://hub:4444/wd/hub -v SERVER:application:7272 login_tests

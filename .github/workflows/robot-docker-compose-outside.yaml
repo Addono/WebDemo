@@ -1,0 +1,36 @@
+name: RF Selenium Hub
+
+on: push
+
+jobs:
+  test-outside:
+    name: Test outside Docker Compose
+
+    runs-on: ubuntu-18.04
+    
+    env:
+      HUB_HOST: http://localhost:4444/wd/hub
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install requirements
+        run: pip install -r requirements.txt
+
+      - name: Run Chrome tests
+        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 login_tests
+        env:
+          BROWSER: chrome
+
+      - name: Run Firefox tests
+        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 login_tests
+        env:
+          BROWSER: firefox
