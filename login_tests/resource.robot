@@ -9,6 +9,7 @@ Library           SeleniumLibrary
 *** Variables ***
 ${SERVER}         localhost:7272
 ${BROWSER}        Firefox
+${REMOTE_URL}     False
 ${DELAY}          0
 ${VALID USER}     demo
 ${VALID PASSWORD}    mode
@@ -18,7 +19,7 @@ ${ERROR URL}      http://${SERVER}/error.html
 
 *** Keywords ***
 Open Browser To Login Page
-    Open Browser    ${LOGIN URL}    ${BROWSER}
+    Open Browser    ${LOGIN URL}    ${BROWSER}  	remote_url=${REMOTE_URL}
     Maximize Browser Window
     Set Selenium Speed    ${DELAY}
     Login Page Should Be Open
