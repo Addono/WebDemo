@@ -39,7 +39,13 @@ jobs:
         run: python demoapp/server.py &
 
       - name: Test
-        run: robot -v BROWSER:${{ matrix.browser }} -v REMOTE_URL:http://hub:4444/wd/hub -v SERVER:application:7272 --outputdir test-results login_tests
+        run: |
+          robot \
+            -v BROWSER:${{ matrix.browser }} \
+            -v REMOTE_URL:http://hub:4444/wd/hub \
+            -v SERVER:application:7272 \
+            --outputdir test-results \
+            login_tests
 
       - name: Store generated reports
         uses: actions/upload-artifact@v2
