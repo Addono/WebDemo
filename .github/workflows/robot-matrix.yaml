@@ -45,11 +45,12 @@ jobs:
             -v REMOTE_URL:http://hub:4444/wd/hub \
             -v SERVER:application:7272 \
             --outputdir test-results \
+            --name ${{ matrix.browser }}-python${{matrix.python-version}} \
             login_tests
 
       - name: Store generated reports
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
-          name: ${{ matrix.browser }}-py${{ matrix.python-version }}-test-results
+          name: ${{ matrix.browser }}-python${{ matrix.python-version }}-test-results
           path: test-results
