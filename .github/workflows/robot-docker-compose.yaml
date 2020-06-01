@@ -19,14 +19,18 @@ jobs:
         run: sleep 10
 
       - name: Run Chrome tests
-        run: docker-compose exec -T application robot -v BROWSER:$BROWSER -v REMOTE_URL:http://selenium-hub:4444/wd/hub -v SERVER:application:7272 --outputdir test-results/$BROWSER /tests/login_tests
+        run: docker-compose run -T --entrypoint robot -v $(pwd)/test-results:/test-results/ -v $(pwd)/login_tests/:/tests/login_tests/ application -v BROWSER:$BROWSER -v REMOTE_URL:http://selenium-hub:4444/wd/hub -v SERVER:application:7272 --outputdir /test-results/$BROWSER --name $BROWSER /tests/login_tests/
         env:
           BROWSER: chrome
 
       - name: Run Firefox tests
-        run: docker-compose exec -T application robot -v BROWSER:$BROWSER -v REMOTE_URL:http://selenium-hub:4444/wd/hub -v SERVER:application:7272 --outputdir test-results/$BROWSER /tests/login_tests
+        run: docker-compose run -T --entrypoint robot -v $(pwd)/test-results:/test-results/ -v $(pwd)/login_tests/:/tests/login_tests/ application -v BROWSER:$BROWSER -v REMOTE_URL:http://selenium-hub:4444/wd/hub -v SERVER:application:7272 --outputdir /test-results/$BROWSER --name $BROWSER /tests/login_tests/
         env:
           BROWSER: firefox
+
+      - name: Combine test results
+        if: ${{ always() }}
+        run: docker-compose run -T --entrypoint rebot -v $(pwd)/test-results:/test-results/ application --name "Browser Compatibility" --outputdir /test-results /test-results/*/output.xml
 
       - name: Store generated reports
         uses: actions/upload-artifact@v2
