@@ -26,14 +26,18 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Chrome tests
-        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 --outputdir test-results/$BROWSER login_tests
+        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 --outputdir test-results/$BROWSER --name $BROWSER login_tests
         env:
           BROWSER: chrome
 
       - name: Run Firefox tests
-        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 --outputdir test-results/$BROWSER login_tests
+        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 --outputdir test-results/$BROWSER --name $BROWSER login_tests
         env:
           BROWSER: firefox
+
+      - name: Combine test results
+        if: ${{ always() }}
+        run: rebot --name "Browser Compotibility" --outputdir test-results test-results/*/output.xml
 
       - name: Store generated reports
         uses: actions/upload-artifact@v2
