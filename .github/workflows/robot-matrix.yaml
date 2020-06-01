@@ -40,3 +40,9 @@ jobs:
 
       - name: Test
         run: robot -v BROWSER:${{ matrix.browser }} -v REMOTE_URL:http://hub:4444/wd/hub -v SERVER:application:7272 login_tests
+
+      - name: Store generated reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.browser }}-py${{ matrix.python-version }}-reports
+          path: ./{output.xml,report.html,log.html}
