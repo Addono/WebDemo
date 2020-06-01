@@ -26,11 +26,18 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Chrome tests
-        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 login_tests
+        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 --outputdir test-results/$BROWSER login_tests
         env:
           BROWSER: chrome
 
       - name: Run Firefox tests
-        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 login_tests
+        run: robot -v BROWSER:$BROWSER -v REMOTE_URL:$HUB_HOST -v SERVER:application:7272 --outputdir test-results/$BROWSER login_tests
         env:
           BROWSER: firefox
+
+      - name: Store generated reports
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}  # Make sure to always collect the reports
+        with:
+          name: test-results
+          path: test-results/
