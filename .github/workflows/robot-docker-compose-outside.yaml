@@ -12,8 +12,7 @@ jobs:
       HUB_HOST: http://localhost:4444/wd/hub
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Start Docker Compose
         run: docker-compose up -d
