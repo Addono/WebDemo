@@ -50,7 +50,7 @@ jobs:
 
       - name: Combine test results
         if: ${{ always() }}
-        run: rebot --name "Browser Compotibility" --outputdir test-results test-results/*/output.xml
+        run: rebot --name "Browser Compatibility" --outputdir test-results test-results/*/output.xml
 
       - name: Store generated reports
         uses: actions/upload-artifact@v2
