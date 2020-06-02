@@ -53,3 +53,32 @@ jobs:
         with:
           name: ${{ matrix.browser }}-python${{ matrix.python-version }}-test-results
           path: test-results
+
+  combine-reports:
+    name: Combine reports
+
+    runs-on: ubuntu-18.04
+
+    needs: [ matrix ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: Install Robot Framework
+        # Retrieves the same version of RF as is specified in our requirements file
+        run: pip install robotframework -c requirements.txt
+
+      - uses: actions/download-artifact@v2
+        
+      - name: Combine test results
+        run: rebot --name "Browser Compatibility" --outputdir combined-results */output.xml
+
+      - name: Store generated reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: combined-test-results
+          path: combined-results
