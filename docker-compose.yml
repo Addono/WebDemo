@@ -14,8 +14,8 @@ services:
 
   chrome:
     image: selenium/node-chrome:3.141.59-20200515
-    volumes:
-      - /dev/shm:/dev/shm
+#    volumes:
+#      - /dev/shm:/dev/shm
     depends_on:
       - selenium-hub
     environment:
@@ -24,8 +24,8 @@ services:
 
   firefox:
     image: selenium/node-firefox:3.141.59-20200515
-    volumes:
-      - /dev/shm:/dev/shm
+#    volumes:
+#      - /dev/shm:/dev/shm
     depends_on:
       - selenium-hub
     environment:
