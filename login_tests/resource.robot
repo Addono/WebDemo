@@ -7,19 +7,20 @@ Documentation     A resource file with reusable keywords and variables.
 Library           SeleniumLibrary
 
 *** Variables ***
-${SERVER}         localhost:7272
-${BROWSER}        Firefox
-${REMOTE_URL}     False
-${DELAY}          0
-${VALID USER}     demo
-${VALID PASSWORD}    mode
-${LOGIN URL}      http://${SERVER}/
-${WELCOME URL}    http://${SERVER}/welcome.html
-${ERROR URL}      http://${SERVER}/error.html
+${SERVER}                  localhost:7272
+${BROWSER}                 Firefox
+${DESIRED_CAPABILITIES}    None
+${REMOTE_URL}              False
+${DELAY}                   0
+${VALID USER}              demo
+${VALID PASSWORD}          mode
+${LOGIN URL}               http://${SERVER}/
+${WELCOME URL}             http://${SERVER}/welcome.html
+${ERROR URL}               http://${SERVER}/error.html
 
 *** Keywords ***
 Open Browser To Login Page
-    Open Browser    ${LOGIN URL}    ${BROWSER}  	remote_url=${REMOTE_URL}
+    Open Browser    ${LOGIN URL}    ${BROWSER}  	remote_url=${REMOTE_URL}    desired_capabilities=${DESIRED_CAPABILITIES}
     Maximize Browser Window
     Set Selenium Speed    ${DELAY}
     Login Page Should Be Open
