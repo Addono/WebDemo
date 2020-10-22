@@ -2,7 +2,11 @@
 
 ## Introduction
 
-In this guide we are going to demo different approaches to
+In this guide we are going to showcase different approaches to building our browser testing infrastructure. All approaches will use the same application under test and test cases. The following approaches are discussed:
+
+* Selenium Standalone
+* Self-hosted Selenium Grid
+* BrowserStack: SaaS Product Compatible With Selenium Grid
 
 ### Explore
 
